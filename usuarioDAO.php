@@ -78,6 +78,14 @@ public function verificar($usuario){
     return false;
 }
 
+public function listCargos(){
+    global $pdo;
+
+    $sql = $pdo->prepare("SELECT id, nome_cargo FROM cargos");
+    $sql->execute();
+
+    return $sql->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 
 ?>
