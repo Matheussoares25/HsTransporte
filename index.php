@@ -12,11 +12,12 @@ $dao = new usuarioDAO();
 $login = $dao->verificar($_POST);
 
     if ($login) {
+       
         header("Location: sistema.php");
         exit;
     } else {
        
-        alert("Erro", "SENHA INCORRETA");
+        alert("error","Erro", "SENHA INCORRETA");
     }
 }
 ?>
@@ -30,8 +31,6 @@ require_once "cabeçalho.php"
     <div class="container">
         <div class="col" style="margin: auto; width: 450px; margin-top: 15%;border: 1px solid rgb(146, 141, 141);border-radius: 25px; background-color: rgb(146, 146, 146);  ">
             
-
-
             <div class="col" style="padding: 5%;" >
                 <form method="POST">
                     <label for="exampleInputEmail1" class="form-label">Email</label>

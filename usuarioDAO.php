@@ -37,13 +37,7 @@ class usuarioDAO{
     ");
 
 
-    $resultado = $sql->execute([
-        $usuario['login'],
-        $usuario['email'],
-        $senha_hash,
-        $usuario['cargo'],
-        $data
-    ]);
+    $resultado = $sql->execute([$usuario['login'],$usuario['email'],$senha_hash,$usuario['cargo'],$data]);
 
      return "OK";
     
@@ -53,31 +47,37 @@ class usuarioDAO{
 }
 
 
-    public function verificar($usuario){
-       global $pdo;
+public function verificar($usuario){
+    global $pdo;
 
-         $sql = $pdo->prepare("SELECT senha FROM Usuario WHERE email = :id");
-         $sql->bindValue(":id", $usuario['email']);
-         $sql->execute();
+  
+    $sql = $pdo->prepare("SELECT id, senha FROM Usuario WHERE email = :email");
+    $sql->bindValue(":email", $usuario['email']);
+    $sql->execute();
 
-        $resultado = $sql->fetch(PDO::FETCH_ASSOC);
+    $resultado = $sql->fetch(PDO::FETCH_ASSOC);
 
+   
 
-         $senhaHashBanco = $resultado['senha'];     
-         $senhaDigitada  = $usuario['senha'];        
-
- 
-       return password_verify($senhaDigitada, $senhaHashBanco);
-
-         $token = geratoken(64);
-         
-         $sql = $pdo->prepare("UPDATE usuario set token_val = ? ");
+    $senhaHashBanco = $resultado['senha'];     
+    $senhaDigitada  = $usuario['senha'];        
 
 
-    $resultado = $sql->execute([$token]);
+    if (password_verify($senhaDigitada, $senhaHashBanco)) {
 
     
+        $token = geratoken(32);
+
+       
+        $sql = $pdo->prepare("UPDATE Usuario SET token_val = ? WHERE id = ?");
+        $sql->execute([$token, $resultado['id']]);
+
+        return true;  
     }
+
+    return false;
+}
+
 }
 
 ?>
