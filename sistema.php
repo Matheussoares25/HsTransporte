@@ -65,7 +65,7 @@ require_once "cabeçalho.php";
                 <a href="#" class="list-group-item list-group-item-action" aria-current="true">
                     Novo frete
                 </a>
-                <a href="#" class="list-group-item list-group-item-action">Motoristas</a>
+                <a href="Lmotorista.php" class="list-group-item list-group-item-action">Motoristas</a>
                 <a href="#" class="list-group-item list-group-item-action">Veiculos</a>
                 <a href="#" class="list-group-item list-group-item-action">Usuarios e login</a>
                 <a href="#" class="list-group-item list-group-item-action">A disabled link item</a>

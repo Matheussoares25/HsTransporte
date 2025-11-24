@@ -2,90 +2,95 @@
 require_once "conexao.php";
 require_once "usuario.php";
 
-function geratoken(int $tamanho = 15): string {
-   
-         $caracteres ='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
-        $caracteres_embaralhados = str_shuffle($caracteres);
+function geratoken(int $tamanho = 15): string
+{
 
-        return substr($caracteres_embaralhados, 0, $tamanho);
+    $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
+    $caracteres_embaralhados = str_shuffle($caracteres);
+
+    return substr($caracteres_embaralhados, 0, $tamanho);
 }
 
 
 
 
-class usuarioDAO{
+class usuarioDAO
+{
 
-   public function cadastrar($usuario){
-    global $pdo;
-    
+    public function cadastrar($usuario)
+    {
+        global $pdo;
 
-    $sql = $pdo->prepare("SELECT id FROM Usuario WHERE email = ?");
-    $sql->execute([$usuario['email']]);
-    
-    if($sql->rowCount() > 0){
-        return "EMAIL_EXISTE";
-        exit;
-    }
 
-    $data = date('Y-m-d H:i:s');
+        $sql = $pdo->prepare("SELECT id FROM Usuario WHERE email = ?");
+        $sql->execute([$usuario['email']]);
 
-    $senha_hash = password_hash($usuario['senha'], PASSWORD_DEFAULT);
+        if ($sql->rowCount() > 0) {
+            return "EMAIL_EXISTE";
+            exit;
+        }
 
-    $sql = $pdo->prepare("
+        $data = date('Y-m-d H:i:s');
+
+        $senha_hash = password_hash($usuario['senha'], PASSWORD_DEFAULT);
+
+        $sql = $pdo->prepare("
         INSERT INTO Usuario (login, email, senha, cargo, data_criacao)
         VALUES (?, ?, ?, ?, ?)
     ");
 
 
-    $resultado = $sql->execute([$usuario['login'],$usuario['email'],$senha_hash,$usuario['cargo'],$data]);
+        $resultado = $sql->execute([$usuario['login'], $usuario['email'], $senha_hash, $usuario['cargo'], $data]);
 
-     return "OK";
-    
-
-    
-
-}
+        return "OK";
 
 
-public function verificar($usuario){
-    global $pdo;
-
-  
-    $sql = $pdo->prepare("SELECT id, senha FROM Usuario WHERE email = :email");
-    $sql->bindValue(":email", $usuario['email']);
-    $sql->execute();
-
-    $resultado = $sql->fetch(PDO::FETCH_ASSOC);
-
-   
-
-    $senhaHashBanco = $resultado['senha'];     
-    $senhaDigitada  = $usuario['senha'];        
 
 
-    if (password_verify($senhaDigitada, $senhaHashBanco)) {
-
-    
-        $token = geratoken(32);
-
-       
-        $sql = $pdo->prepare("UPDATE Usuario SET token_val = ? WHERE id = ?");
-        $sql->execute([$token, $resultado['id']]);
-
-        return true;  
     }
 
-    return false;
-}
 
-public function listCargos(){
-    global $pdo;
+    public function verificar($usuario)
+    {
+        global $pdo;
 
-    $sql = $pdo->prepare("SELECT id, nome_cargo FROM cargos");
-    $sql->execute();
 
-    return $sql->fetchAll(PDO::FETCH_ASSOC);
-}
+        $sql = $pdo->prepare("SELECT id, senha FROM Usuario WHERE email = :email");
+        $sql->bindValue(":email", $usuario['email']);
+        $sql->execute();
+
+        $resultado = $sql->fetch(PDO::FETCH_ASSOC);
+
+
+
+        $senhaHashBanco = $resultado['senha'];
+        $senhaDigitada = $usuario['senha'];
+
+
+        if (password_verify($senhaDigitada, $senhaHashBanco)) {
+
+
+            $token = geratoken(32);
+
+
+            $sql = $pdo->prepare("UPDATE Usuario SET token_val = ? WHERE id = ?");
+            $sql->execute([$token, $resultado['id']]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function listCargos()
+    {
+        global $pdo;
+
+        $sql = $pdo->prepare("SELECT id, nome_cargo FROM cargos");
+        $sql->execute();
+
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>
