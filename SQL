@@ -1,67 +1,79 @@
 CREATE DATABASE HStransporte;
 USE HStransporte;
 
+CREATE TABLE Carga (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  produto VARCHAR(100),
+  peso DECIMAL(10,2)
+);
+
+CREATE TABLE cargos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome_cargo VARCHAR(80)
+);
 
 CREATE TABLE Destinatario (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    cnpj_cli VARCHAR(18),
-    cpf_cli VARCHAR(14),
-    nome_cli VARCHAR(100),
-    endereco_des VARCHAR(150),
-    tel_cli VARCHAR(20)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  cnpj_cli VARCHAR(18),
+  cpf_cli VARCHAR(14),
+  nome_cli VARCHAR(100),
+  endereco_des VARCHAR(150),
+  tel_cli VARCHAR(20)
 );
-
-
-CREATE TABLE Remetente (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    cnpj_reme VARCHAR(18),
-    cpf_reme VARCHAR(14),
-    nome_reme VARCHAR(100),
-    end_reme VARCHAR(150),
-    tel_reme VARCHAR(20)
-);
-
 
 CREATE TABLE Motorista (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    cpf_motor VARCHAR(14),
-    nome_motor VARCHAR(100),
-    tel_motor VARCHAR(20),
-    idade_motor INT,
-    endereco_motor VARCHAR(150)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  cpf_motor VARCHAR(14),
+  nome_motor VARCHAR(100),
+  tel_motor VARCHAR(20),
+  idade_motor INT,
+  endereco_motor VARCHAR(150),
+  cnh_motor VARCHAR(9),
+  Senha INT
+);
+
+CREATE TABLE Remetente (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  cnpj_reme VARCHAR(18),
+  cpf_reme VARCHAR(14),
+  nome_reme VARCHAR(100),
+  end_reme VARCHAR(150),
+  tel_reme VARCHAR(20)
 );
 
 CREATE TABLE Veiculo (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    modelo_vei VARCHAR(50),
-    placa_vei VARCHAR(10),
-    renavam VARCHAR(15),
-    motor_dono INT,
-    FOREIGN KEY (motor_dono) REFERENCES Motorista(id)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  modelo_vei VARCHAR(50),
+  placa_vei VARCHAR(10),
+  renavam VARCHAR(15),
+  motor_dono INT,
+  FOREIGN KEY (motor_dono) REFERENCES Motorista(id)
 );
 
-
-CREATE TABLE Carga (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    produto VARCHAR(100),
-    peso DECIMAL(10,2)
+CREATE TABLE Usuario (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  login VARCHAR(45) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  senha VARCHAR(255) NOT NULL,
+  cargo VARCHAR(50),
+  token_val VARCHAR(64),
+  data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
 
 CREATE TABLE Frete (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    frete_val DECIMAL(10,2),
-    motorista_frete INT,
-    remetente INT,
-    destinatario INT,
-    partida VARCHAR(150),
-    destino VARCHAR(150),
-    veiculo_frete INT,
-    carga_frete INT,
-
-    FOREIGN KEY (motorista_frete) REFERENCES Motorista(id),
-    FOREIGN KEY (remetente) REFERENCES Remetente(id),
-    FOREIGN KEY (destinatario) REFERENCES Destinatario(id),
-    FOREIGN KEY (veiculo_frete) REFERENCES Veiculo(id),
-    FOREIGN KEY (carga_frete) REFERENCES Carga(id)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  frete_val DECIMAL(10,2),
+  motorista_frete INT,
+  remetente INT,
+  destinatario INT,
+  partida VARCHAR(150),
+  destino VARCHAR(150),
+  veiculo_frete INT,
+  carga_frete INT,
+  FOREIGN KEY (motorista_frete) REFERENCES Motorista(id),
+  FOREIGN KEY (remetente) REFERENCES Remetente(id),
+  FOREIGN KEY (destinatario) REFERENCES Destinatario(id),
+  FOREIGN KEY (veiculo_frete) REFERENCES Veiculo(id),
+  FOREIGN KEY (carga_frete) REFERENCES Carga(id)
 );
+
