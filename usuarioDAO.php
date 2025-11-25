@@ -2,6 +2,9 @@
 require_once "conexao.php";
 require_once "usuario.php";
 
+
+
+
 function geratoken(int $tamanho = 15): string
 {
 
@@ -17,79 +20,106 @@ function geratoken(int $tamanho = 15): string
 class usuarioDAO
 {
 
-    public function cadastrar($usuario)
+    private $pdo;
+
+    public function __construct()
     {
-        global $pdo;
-
-
-        $sql = $pdo->prepare("SELECT id FROM Usuario WHERE email = ?");
-        $sql->execute([$usuario['email']]);
-
-        if ($sql->rowCount() > 0) {
-            return "EMAIL_EXISTE";
-            exit;
+        try {
+            $con = new Conexao();
+            $this->pdo = $con->conectar();
+        } catch (PDOException $e) {
+            die("Erro ao conectar ao banco: " . $e->getMessage());
         }
+    }
 
-        $data = date('Y-m-d H:i:s');
+    public function cadastrar(usuario $usuario)
+    {
 
-        $senha_hash = password_hash($usuario['senha'], PASSWORD_DEFAULT);
+        try {
+            $sql = $this->pdo->prepare("SELECT id FROM Usuario WHERE email = ?");
+            $sql->execute([$usuario->email]);
 
-        $sql = $pdo->prepare("
+            if ($sql->rowCount() > 0) {
+                return "EMAIL_EXISTE";
+
+            }
+
+            $data = date('Y-m-d H:i:s');
+
+            $senha_hash = password_hash($usuario->senha, PASSWORD_DEFAULT);
+
+            $sql = $this->pdo->prepare("
         INSERT INTO Usuario (login, email, senha, cargo, data_criacao)
         VALUES (?, ?, ?, ?, ?)
     ");
 
 
-        $resultado = $sql->execute([$usuario['login'], $usuario['email'], $senha_hash, $usuario['cargo'], $data]);
+            $resultado = $sql->execute(
+                [
+                    $usuario->nome,
+                    $usuario->email,
+                    $senha_hash,
+                    $usuario->cargo,
+                    $data
+                ]
+            );
 
-        return "OK";
+            return "OK";
 
 
+        } catch (PDOException $e) {
+            return false;
+        }
 
 
     }
 
 
-    public function verificar($usuario)
+    public function verificar(usuario $usuario)
     {
-        global $pdo;
+
+        try {
+            $sql = $this->pdo->prepare("SELECT id, senha FROM Usuario WHERE email = :email");
+            $sql->bindValue(":email", $usuario->email);
+            $sql->execute();
+
+            $resultado = $sql->fetch(PDO::FETCH_ASSOC);
 
 
-        $sql = $pdo->prepare("SELECT id, senha FROM Usuario WHERE email = :email");
-        $sql->bindValue(":email", $usuario['email']);
-        $sql->execute();
+            if (!$resultado) {
+                return false;
+            }
 
-        $resultado = $sql->fetch(PDO::FETCH_ASSOC);
-
-
-
-        $senhaHashBanco = $resultado['senha'];
-        $senhaDigitada = $usuario['senha'];
+            $senhaHashBanco = $resultado['senha'];
+            $senhaDigitada = $usuario->senha;
 
 
-        if (password_verify($senhaDigitada, $senhaHashBanco)) {
+            if (password_verify($senhaDigitada, $senhaHashBanco)) {
 
+                $token = geratoken(32);
 
-            $token = geratoken(32);
+                $sql = $this->pdo->prepare("UPDATE Usuario SET token_val = ? WHERE id = ?");
+                $sql->execute([$token, $resultado['id']]);
 
+                return true;
+            }
 
-            $sql = $pdo->prepare("UPDATE Usuario SET token_val = ? WHERE id = ?");
-            $sql->execute([$token, $resultado['id']]);
-
-            return true;
+            
+            return false;
+        } catch (PDOException $e) {
+            return false;
         }
-
-        return false;
     }
 
     public function listCargos()
     {
-        global $pdo;
-
-        $sql = $pdo->prepare("SELECT id, nome_cargo FROM cargos");
-        $sql->execute();
-
-        return $sql->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $sql = $this->pdo->prepare("SELECT id, nome_cargo FROM cargos");
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
     }
 }
 

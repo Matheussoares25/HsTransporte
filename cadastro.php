@@ -10,7 +10,15 @@ $dao = new usuarioDAO();
 $cargos = $dao->listCargos(); 
 
 if (isset($_POST['cadastrar'])) {
-    $cadastro = $dao->cadastrar($_POST);
+    
+    $obj = new usuario();
+
+    $obj->nome = $_POST['login'];
+    $obj->email = $_POST['email'];
+    $obj->cargo = $_POST['cargo'];
+    $obj->senha = $_POST['senha'];
+
+    $cadastro = $dao->cadastrar($obj);
 
     if ($cadastro === "OK") {
         alert("success", "Cadastrado", "Usuario cadastrado");

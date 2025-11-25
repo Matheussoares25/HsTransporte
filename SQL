@@ -29,7 +29,7 @@ CREATE TABLE Motorista (
   idade_motor DATETIME,
   endereco_motor VARCHAR(150),
   cnh_motor VARCHAR(9),
-  Senha INT
+  Senha VARCHAR(255) not NULL
 );
 
 CREATE TABLE Remetente (

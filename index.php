@@ -9,7 +9,13 @@ require "functions.php";
 
 if (isset($_POST['entrar'])) {
 $dao = new usuarioDAO();
-$login = $dao->verificar($_POST);
+
+  $obj = new usuario();
+
+  $obj->email = $_POST['email'];
+  $obj->senha = $_POST['senha'];
+
+  $login = $dao->verificar($obj);
 
     if ($login) {
        
@@ -25,35 +31,85 @@ $login = $dao->verificar($_POST);
 require_once "cabeçalho.php"
 ?>
 
+<style>
+    body::before{
+         
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/img/fundologin.jpg') 
+        no-repeat center center;
+    background-size: cover;
+    filter: blur(32px);            
+    transform: scale(1.1);         
+    z-index: -2;
+    }
+
+    .login-wrapper {
+    min-height: 80vh;
+    padding: 20px;
+}
+.login-card {
+    width: 420px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+}
+.modern-input {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    border-radius: 10px;
+}
+.modern-input:focus {
+    border-color: #ff3d3d;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+}
+.btn-modern {
+    background: linear-gradient(45deg, #ff1e1e, #7a0000);
+    border: none;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 12px;
+    color: white;
+    transition: 0.2s;
+}
+.btn-modern:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.65);
+}
+</style>
+
 <body>
     
 
-    <div class="container">
-        <div class="col" style="margin: auto; width: 450px; margin-top: 15%;border: 1px solid rgb(146, 141, 141);border-radius: 25px; background-color: rgb(146, 146, 146);  ">
-            
-            <div class="col" style="padding: 5%;" >
-                <form method="POST">
-                    <label for="exampleInputEmail1" class="form-label">Email</label>
-                    <div class="row-12">
-                        <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
-                        
-                    </div>
-                    <div class="mb-8">
-                        <label for="exampleInputPassword1" class="form-label">Senha</label>
-                        <input type="password" class="form-control" name="senha">
-                    </div>
-                    <div class="mb-3 form-check">
-                        
-                    </div>
-                    <button type="submit" name="entrar"class="btn btn-primary">Entrar</button>
-                </form>
-            </div>
-            <div class="col">
-                
+ <div class="login-wrapper d-flex justify-content-center align-items-center">
+    <div class="login-card p-5">
+        <form method="POST">
+            <h2 class="text-center mb-4">Entrar</h2>
 
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control modern-input" name="email" required>
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label class="form-label">Senha</label>
+                <input type="password" class="form-control modern-input" name="senha" required>
+            </div>
+
+            <button type="submit" name="entrar" class="btn btn-modern w-100 mt-3">
+                Entrar
+            </button>
+        </form>
     </div>
+</div>
 
 
 </body>

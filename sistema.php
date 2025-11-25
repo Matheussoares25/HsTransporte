@@ -6,14 +6,14 @@ require_once "cabeçalho.php";
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <style>
     .carousel-item img {
-        height: 250px;
+        height: 450px;
         width: 100%;
         object-fit: cover;
     }
 </style>
 
 <div class="container-fluid">
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+    <!-- <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="img/1.png" class="d-block w-100">
@@ -50,7 +50,7 @@ require_once "cabeçalho.php";
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
-    </div>
+    </div> -->
 
 
 
@@ -115,51 +115,109 @@ require_once "cabeçalho.php";
         </div>
     </div>
 
+    
+<style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+}
 
-    <div class="container text-center" style="margin-top: 10%">
 
-        <style>
-            .card-opcao {
-                background: linear-gradient(145deg, #cd0f0fff, #8d8d8d);
-                padding: 35px;
-                border-radius: 18px;
-                color: white;
-                width: 100%;
-                font-size: 1.4rem;
-                font-weight: 800;
-                border: none;
-                box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
-                transition: 0.3s ease;
-                cursor: pointer;
-            }
+    body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/img/57b233de040bce12c9b4d7d9dedbcfc4.jpg') 
+        no-repeat center center;
+    background-size: cover;
+    filter: blur(10px);            
+    transform: scale(1.1);         
+    z-index: -2;
+}
 
-            .card-opcao:hover {
-                transform: translateY(-6px);
-                box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.35);
-            }
-        </style>
+    .card-tech {
+        background: #ad1111ff; 
+        padding: 40px 25px;
+        border-radius: 20px;
+        border: 2px solid #000000ff;
+        transition: .3s ease;
+        height: 100%;
+    
+    }
 
-        <div class="row g-4">
+    .card-tech:hover {
+        box-shadow: 0 0 25px rgba(90, 15, 15, 0.9);
+        transform: translateY(-2px);
+    }
 
-            <div class="col-md-6">
-                <button class="card-opcao" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">Nova
-                    Simulação</button>
+    .card-tech h3 {
+        color: white;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .card-tech h3 span {
+        color: #f8ae38ff;
+    }
+
+    .card-tech p {
+        color: #ffffffff;
+        font-size: 15px;
+        margin-top: 12px;
+    }
+
+    .card-icon {
+        font-size: 42px;
+        margin-bottom: 18px;
+        color: #38bdf8;
+    }
+</style>
+
+
+<div class="container text-center" style="margin-top: 10%">
+
+    <div class="row align-items-start">
+
+        <div class="col-md-3">
+            <div class="card-tech" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
+                <div class="card-icon"></div>
+                <h3>Nova <span>Simulação</span></h3>
+                <p>Criar simulações rápidas e automatizadas para seus fretes.</p>
             </div>
-
-            <div class="col-md-6">
-                <button class="card-opcao">Novo Frete</button>
-            </div>
-
-            <div class="col-md-6">
-                <button class="card-opcao">Consultar Fretes</button>
-            </div>
-            <div class="col-md-6">
-                <button class="card-opcao" data-bs-toggle="offcanvas" data-bs-target="#MenuOption">Mais</button>
-
-            </div>
-
         </div>
+
+        <div class="col-md-3">
+            <div class="card-tech">
+                <div class="card-icon"></div>
+                <h3>Novo <span>Frete</span></h3>
+                <p>Cadastre novos fretes com agilidade e precisão.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-tech">
+                <div class="card-icon"></div>
+                <h3>Consultar <span>Fretes</span></h3>
+                <p>Acesse seu histórico completo de fretes cadastrados.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-tech" data-bs-toggle="offcanvas" data-bs-target="#MenuOption">
+                <div class="card-icon"></div>
+                <h3>Mais <span>Opções</span></h3>
+                <p>Acessar configurações e funcionalidades adicionais.</p>
+            </div>
+        </div>
+
     </div>
+
+</div>
 
 
 </div>
