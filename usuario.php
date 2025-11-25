@@ -4,6 +4,7 @@ class usuario{
     public $senha;
     public $email;
     public $cargo;
+    public $cpf;
  
 }
 

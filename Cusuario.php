@@ -6,51 +6,41 @@ require "usuario.php";
 require "usuarioDAO.php";
 require "functions.php";
 
+$dao = new usuarioDAO();
+$cargos = $dao->listCargos();
 
-if (isset($_POST['entrar'])) {
-    $dao = new usuarioDAO();
+if (isset($_POST['cadastrar'])) {
 
     $obj = new usuario();
 
-    $obj->cpf = $_POST['cpf'];
+    $obj->nome = $_POST['login'];
+    $obj->email = $_POST['email'];
+    $obj->cargo = $_POST['cargo'];
     $obj->senha = $_POST['senha'];
+    $obj->cpf = $_POST['cpf'];
 
-    $login = $dao->verificar($obj);
+    $cadastro = $dao->cadastrar($obj);
 
-    if ($login) {
+    if ($cadastro === "OK") {
+        alert("success", "Cadastrado", "Usuario cadastrado");
+    }
 
-        header("Location: sistema.php");
-        exit;
-    } else {
+    if ($cadastro === "CPF_EXISTE") {
+        alert("error", "Ja existe", "Usuario ja existe");
+    }
 
-        alert("error", "Erro", "SENHA INCORRETA");
+    if ($cadastro === "ERRO") {
+        alert("error", "ERRO", "ERRO FATAL");
     }
 }
 
+require_once "cabeçalho.php";
 
 
-if (isset($_POST['login_tipo'])) {
-
-    if ($_POST['login_tipo'] === "motorista") {
-        header("Location: login_motorista.php");
-        exit;
-    }
-
-    if ($_POST['login_tipo'] === "admin") {
-        header("Location: login_admin.php");
-        exit;
-    }
-
-}
 
 ?>
-<?php
-require_once "cabeçalho.php"
-    ?>
-
 <style>
     body::before {
-
         content: "";
         position: fixed;
         top: 0;
@@ -70,7 +60,7 @@ require_once "cabeçalho.php"
     }
 
     .login-card {
-        width: 420px;
+        width: 520px;
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(20px);
         border-radius: 20px;
@@ -105,52 +95,60 @@ require_once "cabeçalho.php"
         transform: scale(1.04);
         box-shadow: 0 0 15px rgba(255, 0, 0, 0.65);
     }
+
+    label.form-label {
+        color: #fff;
+    }
+
+    .form-text {
+        color: rgba(255, 255, 255, 0.8);
+    }
 </style>
 
 <body>
 
-
-   <div class="login-wrapper d-flex justify-content-center align-items-center">
-    <div class="login-card p-5">
-        <form method="POST">
-
-            <button type="submit" name="login_tipo" value="motorista" class="btn btn-modern w-100 mt-3">
-                Motorista Login
-            </button>
-
-            <button type="submit" name="login_tipo" value="admin" class="btn btn-modern w-100 mt-3">
-                Admin Login
-            </button>
-
-        </form>
-    </div>
-</div>
-
-
-
-<!-- 
     <div class="login-wrapper d-flex justify-content-center align-items-center">
-        <div class="login-card p-5">
+        <div class="login-card p-4">
             <form method="POST">
-                <h2 class="text-center mb-4">Entrar</h2>
+                <h2 class="text-center mb-3">Cadastro de Usuário</h2>
 
                 <div class="mb-3">
+                    <label class="form-label">Nome de usuário</label>
+                    <input type="text" class="form-control modern-input" name="login" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control modern-input" name="email" required>
+                </div>
+                 <div class="mb-3">
                     <label class="form-label">Cpf</label>
                     <input type="text" class="form-control modern-input" name="cpf" required>
                 </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Cargo</label>
+                    <select name="cargo" class="form-select modern-input" required style="color: black;">
+                        <option value="">-- Selecione --</option>
+                        <?php foreach ($cargos as $cargo): ?>
+                            <option value="<?= $cargo['id'] ?>">
+                                <?= $cargo['nome_cargo'] ?>
+                            </option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+
 
                 <div class="mb-3">
                     <label class="form-label">Senha</label>
                     <input type="password" class="form-control modern-input" name="senha" required>
                 </div>
 
-                <button type="submit" name="entrar" class="btn btn-modern w-100 mt-3">
-                    Entrar
-                </button>
+                <button type="submit" name="cadastrar" class="btn btn-modern w-100 mt-3">Cadastrar</button>
+
             </form>
         </div>
-    </div> -->
-
+    </div>
 
 </body>
 

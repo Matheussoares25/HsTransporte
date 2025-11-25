@@ -62,12 +62,8 @@ require_once "cabeçalho.php";
         </div>
         <div class="offcanvas-body">
             <div class="list-group gap-4 text-white">
-                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                    Novo frete
-                </a>
-                <a href="Lmotorista.php" class="list-group-item list-group-item-action">Motoristas</a>
+               
                 <a href="#" class="list-group-item list-group-item-action">Veiculos</a>
-                <a href="Cusuario.php" class="list-group-item list-group-item-action">Usuarios e login</a>
                 <a href="#" class="list-group-item list-group-item-action">A disabled link item</a>
             </div>
         </div>
@@ -181,9 +177,9 @@ require_once "cabeçalho.php";
 
 <div class="container text-center" style="margin-top: 10%">
 
-    <div class="row align-items-start">
+    <div class="row align-items-center">
 
-        <div class="col-md-3">
+        <div class="col-12">
             <div class="card-tech" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
                 <div class="card-icon"></div>
                 <h3>Nova <span>Simulação</span></h3>
@@ -191,15 +187,7 @@ require_once "cabeçalho.php";
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card-tech">
-                <div class="card-icon"></div>
-                <h3>Novo <span>Frete</span></h3>
-                <p>Cadastre novos fretes com agilidade e precisão.</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
+        <div class="col mt-4">
             <div class="card-tech">
                 <div class="card-icon"></div>
                 <h3>Consultar <span>Fretes</span></h3>
@@ -207,7 +195,7 @@ require_once "cabeçalho.php";
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col mt-4">
             <div class="card-tech" data-bs-toggle="offcanvas" data-bs-target="#MenuOption">
                 <div class="card-icon"></div>
                 <h3>Mais <span>Opções</span></h3>

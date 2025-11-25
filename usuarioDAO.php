@@ -36,11 +36,11 @@ class usuarioDAO
     {
 
         try {
-            $sql = $this->pdo->prepare("SELECT id FROM Usuario WHERE email = ?");
-            $sql->execute([$usuario->email]);
+            $sql = $this->pdo->prepare("SELECT id FROM Usuario WHERE cpf = ?");
+            $sql->execute([$usuario->cpf]);
 
             if ($sql->rowCount() > 0) {
-                return "EMAIL_EXISTE";
+                return "CPF_EXISTE";
 
             }
 
@@ -49,8 +49,8 @@ class usuarioDAO
             $senha_hash = password_hash($usuario->senha, PASSWORD_DEFAULT);
 
             $sql = $this->pdo->prepare("
-        INSERT INTO Usuario (login, email, senha, cargo, data_criacao)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO Usuario (login, email, senha, cargo, data_criacao,cpf)
+        VALUES (?, ?, ?, ?, ?,?)
     ");
 
 
@@ -60,7 +60,8 @@ class usuarioDAO
                     $usuario->email,
                     $senha_hash,
                     $usuario->cargo,
-                    $data
+                    $data,
+                    $usuario->cpf
                 ]
             );
 
@@ -77,35 +78,38 @@ class usuarioDAO
 
     public function verificar(usuario $usuario)
     {
-
         try {
-            $sql = $this->pdo->prepare("SELECT id, senha FROM Usuario WHERE email = :email");
-            $sql->bindValue(":email", $usuario->email);
+
+            $sql = $this->pdo->prepare("
+            (SELECT id,senha,cargo from Usuario WHERE cpf = :cpf)
+            
+        ");
+
+            $sql->bindValue(":cpf", $usuario->cpf);
             $sql->execute();
 
             $resultado = $sql->fetch(PDO::FETCH_ASSOC);
-
 
             if (!$resultado) {
                 return false;
             }
 
-            $senhaHashBanco = $resultado['senha'];
-            $senhaDigitada = $usuario->senha;
 
-
-            if (password_verify($senhaDigitada, $senhaHashBanco)) {
-
-                $token = geratoken(32);
-
-                $sql = $this->pdo->prepare("UPDATE Usuario SET token_val = ? WHERE id = ?");
-                $sql->execute([$token, $resultado['id']]);
-
-                return true;
+            if (!password_verify($usuario->senha, $resultado['senha'])) {
+                return false;
             }
 
-            
-            return false;
+
+            if ($resultado['cargo'] == 3) {
+
+                header("Location: Lmotorista.php");
+                exit;
+            }
+
+
+
+            return true;
+
         } catch (PDOException $e) {
             return false;
         }

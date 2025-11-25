@@ -2,46 +2,39 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require "usuario.php";
-require "usuarioDAO.php";
+require "motorista.php";
+require "motoristaDAO.php";
 require "functions.php";
 
 
 if (isset($_POST['entrar'])) {
-    $dao = new usuarioDAO();
 
-    $obj = new usuario();
+    $dao = new motoristaDAO();
 
+    $obj = new motorista();
     $obj->cpf = $_POST['cpf'];
     $obj->senha = $_POST['senha'];
 
     $login = $dao->verificar($obj);
 
-    if ($login) {
+    if ($login === "NAO_EXISTE") {
 
-        header("Location: sistema.php");
+        alert("error", "Erro", "Motorista não cadastrado");
+
+    } elseif ($login === true) {
+
+        header("Location: sistema_motor.php");
         exit;
+
     } else {
 
         alert("error", "Erro", "SENHA INCORRETA");
+
     }
 }
 
 
 
-if (isset($_POST['login_tipo'])) {
-
-    if ($_POST['login_tipo'] === "motorista") {
-        header("Location: login_motorista.php");
-        exit;
-    }
-
-    if ($_POST['login_tipo'] === "admin") {
-        header("Location: login_admin.php");
-        exit;
-    }
-
-}
 
 ?>
 <?php
@@ -110,25 +103,8 @@ require_once "cabeçalho.php"
 <body>
 
 
-   <div class="login-wrapper d-flex justify-content-center align-items-center">
-    <div class="login-card p-5">
-        <form method="POST">
-
-            <button type="submit" name="login_tipo" value="motorista" class="btn btn-modern w-100 mt-3">
-                Motorista Login
-            </button>
-
-            <button type="submit" name="login_tipo" value="admin" class="btn btn-modern w-100 mt-3">
-                Admin Login
-            </button>
-
-        </form>
-    </div>
-</div>
 
 
-
-<!-- 
     <div class="login-wrapper d-flex justify-content-center align-items-center">
         <div class="login-card p-5">
             <form method="POST">
@@ -145,11 +121,11 @@ require_once "cabeçalho.php"
                 </div>
 
                 <button type="submit" name="entrar" class="btn btn-modern w-100 mt-3">
-                    Entrar
+                    Entrar Como motorista
                 </button>
             </form>
         </div>
-    </div> -->
+    </div>
 
 
 </body>

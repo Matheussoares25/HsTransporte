@@ -29,19 +29,6 @@ if (isset($_POST['entrar'])) {
 
 
 
-if (isset($_POST['login_tipo'])) {
-
-    if ($_POST['login_tipo'] === "motorista") {
-        header("Location: login_motorista.php");
-        exit;
-    }
-
-    if ($_POST['login_tipo'] === "admin") {
-        header("Location: login_admin.php");
-        exit;
-    }
-
-}
 
 ?>
 <?php
@@ -110,25 +97,8 @@ require_once "cabeçalho.php"
 <body>
 
 
-   <div class="login-wrapper d-flex justify-content-center align-items-center">
-    <div class="login-card p-5">
-        <form method="POST">
-
-            <button type="submit" name="login_tipo" value="motorista" class="btn btn-modern w-100 mt-3">
-                Motorista Login
-            </button>
-
-            <button type="submit" name="login_tipo" value="admin" class="btn btn-modern w-100 mt-3">
-                Admin Login
-            </button>
-
-        </form>
-    </div>
-</div>
 
 
-
-<!-- 
     <div class="login-wrapper d-flex justify-content-center align-items-center">
         <div class="login-card p-5">
             <form method="POST">
@@ -145,11 +115,11 @@ require_once "cabeçalho.php"
                 </div>
 
                 <button type="submit" name="entrar" class="btn btn-modern w-100 mt-3">
-                    Entrar
+                    Entrar Como Admin
                 </button>
             </form>
         </div>
-    </div> -->
+    </div>
 
 
 </body>

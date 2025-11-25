@@ -52,33 +52,69 @@ class motoristaDAO
 
     public function cadastrar(motorista $motorista)
     {
+        try {
 
+            $senha_hash = password_hash($motorista->senha, PASSWORD_DEFAULT);
 
-
-
-        $senha_hash = password_hash($motorista->senha, PASSWORD_DEFAULT);
-
-        $sql = $this->pdo->prepare("
+            $sql = $this->pdo->prepare("
             INSERT INTO Motorista 
-            (cpf_motor, nome_motor, tel_motor, idade_motor, endereco_motor, cnh_motor, senha)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            (cpf_motor, nome_motor, tel_motor, idade_motor, endereco_motor, cnh_motor, senha, cargo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
-        try {
-            return $sql->execute([
+            $ok = $sql->execute([
                 $motorista->cpf,
                 $motorista->nome,
                 $motorista->tel,
                 $motorista->idade,
                 $motorista->endereco,
                 $motorista->cnh,
-                $senha_hash
+                $senha_hash,
+                3
             ]);
 
+            if (!$ok) {
+                var_dump($sql->errorInfo());
+                die();
+            }
+
+            return true;
+
         } catch (PDOException $e) {
-            return false;
+            echo $e->getMessage();
+            die();
         }
     }
+    public function verificar(motorista $motorista)
+{
+    try {
+
+        $sql = $this->pdo->prepare(
+            "SELECT id, senha, cargo FROM Motorista WHERE cpf_motor = :cpf"
+        );
+        $sql->bindValue(":cpf", $motorista->cpf);
+        $sql->execute();
+
+     
+        if ($sql->rowCount() == 0) {
+            return "NAO_EXISTE";
+        }
+
+        $dados = $sql->fetch(PDO::FETCH_ASSOC);
+
+        
+        if (!password_verify($motorista->senha, $dados['senha'])) {
+            return false;
+        }
+
+       
+        return true;
+
+    } catch (PDOException $e) {
+        return "ERRO";
+    }
+}
+
 
 
 
