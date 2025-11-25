@@ -80,30 +80,7 @@ class motoristaDAO
         }
     }
 
-    public function buscarPorId($id)
-    {
-        $sql = $this->pdo->prepare("SELECT * FROM Motorista WHERE id = ?");
-        $sql->execute([$id]);
-        return $sql->fetch(PDO::FETCH_ASSOC);
-    }
-    public function atualizar(motorista $m)
-{
-    $sql = $this->pdo->prepare("
-        UPDATE Motorista 
-        SET nome_motor=?, cpf_motor=?, tel_motor=?, idade_motor=?, endereco_motor=?, cnh_motor=? 
-        WHERE id_motor=?
-    ");
 
-    return $sql->execute([
-        $m->nome,
-        $m->cpf,
-        $m->tel,
-        $m->idade,
-        $m->endereco,
-        $m->cnh,
-        $m->id
-    ]);
-}
 
 }
 
