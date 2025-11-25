@@ -1,8 +1,12 @@
 <?php
-$host = "localhost";
-$user = "nauta";
-$db = "HStransporte";
-$passwd = "123";
+
+
+ $host = "localhost";
+ $user = "root";
+ $db = "HStransporte";
+ $passwd = "root";
+
+
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $passwd);
@@ -10,4 +14,5 @@ try {
 catch (PDOException $ex) {
     echo "Erro ao conectar: " . $ex->getMessage();
 }
+
 ?>

@@ -7,7 +7,7 @@ require "usuarioDAO.php";
 require "functions.php";
 
 $dao = new usuarioDAO();
-$cargos = $dao->listCargos(); // lista todos os cargos
+$cargos = $dao->listCargos(); 
 
 if (isset($_POST['cadastrar'])) {
     $cadastro = $dao->cadastrar($_POST);

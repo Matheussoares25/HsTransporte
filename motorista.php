@@ -8,7 +8,6 @@ class motorista{
     public $idade;
     public $endereco;
     public $cnh;
-    
 }
 
 ?>

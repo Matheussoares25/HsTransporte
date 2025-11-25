@@ -26,7 +26,7 @@ CREATE TABLE Motorista (
   cpf_motor VARCHAR(14),
   nome_motor VARCHAR(100),
   tel_motor VARCHAR(20),
-  idade_motor INT,
+  idade_motor DATETIME,
   endereco_motor VARCHAR(150),
   cnh_motor VARCHAR(9),
   Senha INT

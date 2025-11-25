@@ -10,6 +10,29 @@ require_once "motorista.php";
 
 $dao = new motoristaDAO();
 $motorista = $dao->listar();
+
+if(isset($_POST['cadastrar'])){
+
+    $obj = new motorista();
+    
+    $obj->nome = $_POST['nome'];
+    $obj->senha = $_POST['senha'];
+    $obj->cpf = $_POST['cpf'];
+    $obj->tel = $_POST['tel'];
+    $obj->idade = $_POST['idade'];
+    $obj->endereco = $_POST['endereco'];
+    $obj->cnh = $_POST['cnh'];
+
+    $retorno = $dao->cadastrar($obj);
+   
+       if ($retorno) {
+    
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;  
+    } else {
+        echo "<div class='alert alert-danger'>Erro ao cadastrar motorista.</div>";
+    }
+}
 ?>
 
 
@@ -18,12 +41,12 @@ $motorista = $dao->listar();
 
 
 
-<div class="container">
+<div class="container " style="margin-top:10%">
     <div class="container text-center">
         <div class="row">
-            <div class="col text-center" style="margin-top:15%">
+            <div class="col text-center" >
                 <h3>Motoristas Cadastrados</h3>
-
+=
                 <table class="table table table-striped " name="motoristas" id="motoristas" style="margin-top: 15%">
 
                     <thead>
@@ -50,7 +73,51 @@ $motorista = $dao->listar();
             </div>
 
             <div class="col">
-                Column
+         <form class="row g-3 p-5" method="POST">
+    <div class="col-12">
+        <label for="nome" class="form-label">Cadastro Motorista</label>
+        <input type="text" class="form-control" name="nome" id="nome" placeholder="Seu nome / login" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" name="email" id="email" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="cnh" class="form-label">CNH</label>
+        <input type="text" class="form-control" name="cnh" id="cnh" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="cpf" class="form-label">CPF</label>
+        <input type="text" class="form-control" name="cpf" id="cpf" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="tel" class="form-label">Telefone</label>
+        <input type="text" class="form-control" name="tel" id="tel" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="endereco" class="form-label">Endereço</label>
+        <input type="text" class="form-control" name="endereco" id="endereco" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="idade" class="form-label">Idade</label>
+        <input type="text" class="form-control" name="idade" id="idade" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="senha" class="form-label">Senha</label>
+        <input type="password" class="form-control" name="senha" id="senha" required>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" name="cadastrar" class="btn btn-primary">Cadastrar</button>
+    </div>
+</form>
             </div>
         </div>
     </div>
