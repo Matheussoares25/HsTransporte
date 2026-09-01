@@ -2,7 +2,7 @@
 
 class Conexao{
  private $host = "localhost";
- private $user = "nauta";
+ private $user = "";
  private $db = "HStransporte";
  private $passwd = "123";
  private $pdo;
